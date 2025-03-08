@@ -1,0 +1,55 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="org.opencv.test" >
+4
+5    <uses-sdk
+5-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:5:5-74
+6        android:minSdkVersion="21"
+6-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:5:15-41
+7        android:targetSdkVersion="26" />
+7-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:5:42-71
+8
+9    <instrumentation
+9-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:11:5-15:65
+10        android:name="android.test.InstrumentationTestRunner"
+10-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:11:22-75
+11        android:functionalTest="false"
+11-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:14:22-52
+12        android:handleProfiling="false"
+12-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:13:22-53
+13        android:label="Tests for org.opencv.test"
+13-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:15:22-63
+14        android:targetPackage="org.opencv.test" />
+14-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:12:22-61
+15
+16    <uses-permission android:name="android.permission.CAMERA" />
+16-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:5-65
+16-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:7:22-62
+17
+18    <uses-feature
+18-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:9:5-11:35
+19        android:name="android.hardware.camera"
+19-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:10:9-47
+20        android:required="true" />
+20-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:11:9-32
+21
+22    <queries>
+22-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:13:5-17:15
+23        <intent>
+23-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:14:9-16:18
+24            <action android:name="android.media.action.IMAGE_CAPTURE" />
+24-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:13-73
+24-->[:opencv] D:\androidproject\opencv\opencv\build\intermediates\merged_manifest\debug\processDebugManifest\AndroidManifest.xml:15:21-70
+25        </intent>
+26    </queries>
+27
+28    <application
+28-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:7:5-9:19
+29        android:debuggable="true"
+30        android:extractNativeLibs="true" >
+31        <uses-library android:name="android.test.runner" />
+31-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:8:9-60
+31-->D:\androidproject\opencv\opencv\build\intermediates\tmp\manifest\androidTest\debug\tempFile1ProcessTestManifest18439470230711063567.xml:8:23-57
+32    </application>
+33
+34</manifest>
