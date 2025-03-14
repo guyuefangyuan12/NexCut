@@ -12,4 +12,4 @@
 -- Detecting CXX compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: D:/AndroidProject/NexCut/NexCut/opencv/.cxx/Debug/5o396w4h/x86
+-- Build files have been written to: D:/AndroidProject/NexCut/opencv/.cxx/Debug/5o396w4h/x86
