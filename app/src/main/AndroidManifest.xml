@@ -54,7 +54,10 @@
             android:exported="false" />
         <activity
             android:name=".image.ImageEditActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
+        <activity
+            android:name=".whiteboard.WhiteboardActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

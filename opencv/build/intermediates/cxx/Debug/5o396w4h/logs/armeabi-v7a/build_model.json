@@ -8,9 +8,9 @@
     "triple": "arm-linux-androideabi",
     "llvmTriple": "armv7-none-linux-androideabi"
   },
-  "cxxBuildFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\.cxx\\Debug\\5o396w4h\\armeabi-v7a",
-  "soFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h\\obj\\armeabi-v7a",
-  "soRepublishFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates\\cmake\\debug\\obj\\armeabi-v7a",
+  "cxxBuildFolder": "E:\\Android\\250313\\NexCut\\opencv\\.cxx\\Debug\\5o396w4h\\armeabi-v7a",
+  "soFolder": "E:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h\\obj\\armeabi-v7a",
+  "soRepublishFolder": "E:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\cmake\\debug\\obj\\armeabi-v7a",
   "abiPlatformVersion": 21,
   "cmake": {
     "effectiveConfiguration": {
@@ -38,16 +38,16 @@
     "implicitBuildTargetSet": [],
     "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
     "module": {
-      "cxxFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\.cxx",
-      "intermediatesBaseFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates",
-      "intermediatesFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates\\cxx",
+      "cxxFolder": "E:\\Android\\250313\\NexCut\\opencv\\.cxx",
+      "intermediatesBaseFolder": "E:\\Android\\250313\\NexCut\\opencv\\build\\intermediates",
+      "intermediatesFolder": "E:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\cxx",
       "gradleModulePathName": ":opencv",
-      "moduleRootFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv",
-      "moduleBuildFile": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\build.gradle",
-      "makeFile": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\libcxx_helper\\CMakeLists.txt",
+      "moduleRootFolder": "E:\\Android\\250313\\NexCut\\opencv",
+      "moduleBuildFile": "E:\\Android\\250313\\NexCut\\opencv\\build.gradle",
+      "makeFile": "E:\\Android\\250313\\NexCut\\opencv\\libcxx_helper\\CMakeLists.txt",
       "buildSystem": "CMAKE",
-      "ndkFolder": "D:\\Android\\SDK\\ndk\\27.0.12077973",
-      "ndkFolderBeforeSymLinking": "D:\\Android\\SDK\\ndk\\27.0.12077973",
+      "ndkFolder": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973",
+      "ndkFolderBeforeSymLinking": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973",
       "ndkVersion": "27.0.12077973",
       "ndkSupportedAbiList": [
         "armeabi-v7a",
@@ -137,31 +137,31 @@
           "llvmTriple": "x86_64-none-linux-android"
         }
       ],
-      "cmakeToolchainFile": "D:\\Android\\SDK\\ndk\\27.0.12077973\\build\\cmake\\android.toolchain.cmake",
+      "cmakeToolchainFile": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\build\\cmake\\android.toolchain.cmake",
       "cmake": {
-        "cmakeExe": "D:\\Android\\SDK\\cmake\\3.22.1\\bin\\cmake.exe"
+        "cmakeExe": "E:\\Android\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\cmake.exe"
       },
       "stlSharedObjectMap": {
         "LIBCXX_SHARED": {
-          "armeabi-v7a": "D:\\Android\\SDK\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
-          "arm64-v8a": "D:\\Android\\SDK\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\aarch64-linux-android\\libc++_shared.so",
-          "riscv64": "D:\\Android\\SDK\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\riscv64-linux-android\\libc++_shared.so",
-          "x86": "D:\\Android\\SDK\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\i686-linux-android\\libc++_shared.so",
-          "x86_64": "D:\\Android\\SDK\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\x86_64-linux-android\\libc++_shared.so"
+          "armeabi-v7a": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
+          "arm64-v8a": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\aarch64-linux-android\\libc++_shared.so",
+          "riscv64": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\riscv64-linux-android\\libc++_shared.so",
+          "x86": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\i686-linux-android\\libc++_shared.so",
+          "x86_64": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\x86_64-linux-android\\libc++_shared.so"
         },
         "LIBCXX_STATIC": {},
         "NONE": {},
         "SYSTEM": {}
       },
       "project": {
-        "rootBuildGradleFolder": "D:\\AndroidProject\\OpenCV\\opencv",
-        "sdkFolder": "D:\\Android\\SDK",
+        "rootBuildGradleFolder": "E:\\Android\\250313\\NexCut",
+        "sdkFolder": "E:\\Android\\AppData\\Local\\Android\\Sdk",
         "isBuildOnlyTargetAbiEnabled": true,
         "isCmakeBuildCohabitationEnabled": false,
         "isPrefabEnabled": false
       },
       "outputOptions": [],
-      "ninjaExe": "D:\\Android\\SDK\\cmake\\3.22.1\\bin\\ninja.exe",
+      "ninjaExe": "E:\\Android\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
       "hasBuildTimeInformation": true
     },
     "prefabClassPaths": [],
@@ -173,29 +173,29 @@
   "buildSettings": {
     "environmentVariables": []
   },
-  "prefabFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\.cxx\\Debug\\5o396w4h\\prefab\\armeabi-v7a",
+  "prefabFolder": "E:\\Android\\250313\\NexCut\\opencv\\.cxx\\Debug\\5o396w4h\\prefab\\armeabi-v7a",
   "isActiveAbi": true,
   "fullConfigurationHash": "5o396w4h3s1eex43691c6s205o4w6o6l6h4d1z2p4g1deq3x1k3fa6m4j42",
   "fullConfigurationHashKey": "# Values used to calculate the hash in this folder name.\n# Should not depend on the absolute path of the project itself.\n#   - AGP: 8.8.0.\n#   - $NDK is the path to NDK 27.0.12077973.\n#   - $PROJECT is the path to the parent folder of the root Gradle build file.\n#   - $ABI is the ABI to be built with. The specific value doesn\u0027t contribute to the value of the hash.\n#   - $HASH is the hash value computed from this text.\n#   - $CMAKE is the path to CMake 3.22.1.\n#   - $NINJA is the path to Ninja.\n-H$PROJECT/opencv/libcxx_helper\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_SYSTEM_VERSION\u003d21\n-DANDROID_PLATFORM\u003dandroid-21\n-DANDROID_ABI\u003d$ABI\n-DCMAKE_ANDROID_ARCH_ABI\u003d$ABI\n-DANDROID_NDK\u003d$NDK\n-DCMAKE_ANDROID_NDK\u003d$NDK\n-DCMAKE_TOOLCHAIN_FILE\u003d$NDK/build/cmake/android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003d$NINJA\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d$PROJECT/opencv/build/intermediates/cxx/Debug/$HASH/obj/$ABI\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d$PROJECT/opencv/build/intermediates/cxx/Debug/$HASH/obj/$ABI\n-DCMAKE_BUILD_TYPE\u003dDebug\n-B$PROJECT/opencv/.cxx/Debug/$HASH/$ABI\n-GNinja\n-DANDROID_STL\u003dc++_shared",
   "configurationArguments": [
-    "-HD:\\AndroidProject\\OpenCV\\opencv\\opencv\\libcxx_helper",
+    "-HE:\\Android\\250313\\NexCut\\opencv\\libcxx_helper",
     "-DCMAKE_SYSTEM_NAME\u003dAndroid",
     "-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON",
     "-DCMAKE_SYSTEM_VERSION\u003d21",
     "-DANDROID_PLATFORM\u003dandroid-21",
     "-DANDROID_ABI\u003darmeabi-v7a",
     "-DCMAKE_ANDROID_ARCH_ABI\u003darmeabi-v7a",
-    "-DANDROID_NDK\u003dD:\\Android\\SDK\\ndk\\27.0.12077973",
-    "-DCMAKE_ANDROID_NDK\u003dD:\\Android\\SDK\\ndk\\27.0.12077973",
-    "-DCMAKE_TOOLCHAIN_FILE\u003dD:\\Android\\SDK\\ndk\\27.0.12077973\\build\\cmake\\android.toolchain.cmake",
-    "-DCMAKE_MAKE_PROGRAM\u003dD:\\Android\\SDK\\cmake\\3.22.1\\bin\\ninja.exe",
-    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dD:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h\\obj\\armeabi-v7a",
-    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dD:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h\\obj\\armeabi-v7a",
+    "-DANDROID_NDK\u003dE:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973",
+    "-DCMAKE_ANDROID_NDK\u003dE:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973",
+    "-DCMAKE_TOOLCHAIN_FILE\u003dE:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\build\\cmake\\android.toolchain.cmake",
+    "-DCMAKE_MAKE_PROGRAM\u003dE:\\Android\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003dE:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h\\obj\\armeabi-v7a",
+    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003dE:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h\\obj\\armeabi-v7a",
     "-DCMAKE_BUILD_TYPE\u003dDebug",
-    "-BD:\\AndroidProject\\OpenCV\\opencv\\opencv\\.cxx\\Debug\\5o396w4h\\armeabi-v7a",
+    "-BE:\\Android\\250313\\NexCut\\opencv\\.cxx\\Debug\\5o396w4h\\armeabi-v7a",
     "-GNinja",
     "-DANDROID_STL\u003dc++_shared"
   ],
-  "stlLibraryFile": "D:\\Android\\SDK\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
-  "intermediatesParentFolder": "D:\\AndroidProject\\OpenCV\\opencv\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h"
+  "stlLibraryFile": "E:\\Android\\AppData\\Local\\Android\\Sdk\\ndk\\27.0.12077973\\toolchains\\llvm\\prebuilt\\windows-x86_64\\sysroot\\usr\\lib\\arm-linux-androideabi\\libc++_shared.so",
+  "intermediatesParentFolder": "E:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\cxx\\Debug\\5o396w4h"
 }

@@ -4,7 +4,7 @@
             "outputFile": "org.opencv.test.opencv-mergeDebugAndroidTestResources-1:/values/values.xml",
             "map": [
                 {
-                    "source": "D:\\androidproject\\opencv\\opencv\\build\\intermediates\\packaged_res\\debug\\packageDebugResources\\values\\values.xml",
+                    "source": "E:\\Android\\250313\\NexCut\\opencv\\build\\intermediates\\packaged_res\\debug\\packageDebugResources\\values\\values.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

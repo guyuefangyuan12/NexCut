@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+
 android {
     namespace 'com.example.opencv'
     compileSdk 35
@@ -29,6 +30,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+
+
 }
 
 dependencies {
@@ -43,6 +47,7 @@ dependencies {
     implementation "commons-codec:commons-codec:1.16.0"
     implementation "commons-logging:commons-logging:1.2"
     implementation libs.junit
+    implementation project(':app:whiteboardlib')
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 }
