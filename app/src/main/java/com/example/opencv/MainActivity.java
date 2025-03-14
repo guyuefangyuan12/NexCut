@@ -48,6 +48,7 @@ import com.example.opencv.image.GCodeRead;
 import com.example.opencv.image.ImageEditActivity;
 import com.example.opencv.modbus.ModbusTCPClient;
 import com.example.opencv.databinding.ActivityMainBinding;
+import com.example.opencv.whiteboard.WhiteboardActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -124,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-        findViewById(R.id.button1).setClickable(false);
-        findViewById(R.id.button2).setClickable(false);
-        findViewById(R.id.bottom_button2).setClickable(false);
+//        findViewById(R.id.button1).setClickable(false);
+//        findViewById(R.id.button2).setClickable(false);
+//        findViewById(R.id.bottom_button2).setClickable(false);
 
     }
 
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         Animation scaleIn = AnimationUtils.loadAnimation(this, R.anim.anim_scale_in);
         view.startAnimation(scaleIn);
 
-        Intent intent = new Intent(MainActivity.this, ImageEditActivity.class);
+        Intent intent = new Intent(MainActivity.this, WhiteboardActivity.class);
         startActivity(intent);
     }
 

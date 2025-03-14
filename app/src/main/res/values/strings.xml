@@ -11,6 +11,7 @@
     <string name="company_name">au3tech</string>
     <string name="user">user</string>
     <string name="File">文件</string>
+    <string name="action_settings">Settings</string>
     <string-array name="axis_numbers">
         <item>轴0</item>
         <item>轴1</item>

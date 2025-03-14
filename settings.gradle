@@ -20,5 +20,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "OpenCV"
-include ':app'
+include ':app',':app:whiteboardlib'
 include ':opencv'
+

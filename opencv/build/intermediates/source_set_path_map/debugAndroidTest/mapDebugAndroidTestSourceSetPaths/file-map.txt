@@ -1,5 +1,5 @@
-org.opencv.test.opencv-androidTest-0 D:\androidproject\opencv\opencv\build\generated\res\resValues\androidTest\debug
-org.opencv.test.opencv-mergeDebugAndroidTestResources-1 D:\androidproject\opencv\opencv\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
-org.opencv.test.opencv-mergeDebugAndroidTestResources-2 D:\androidproject\opencv\opencv\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
-org.opencv.test.opencv-debugAndroidTest-3 D:\androidproject\opencv\opencv\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
-org.opencv.test.opencv-debug-4 D:\androidproject\opencv\opencv\build\intermediates\packaged_res\debug\packageDebugResources
+org.opencv.test.opencv-androidTest-0 E:\Android\250313\NexCut\opencv\build\generated\res\resValues\androidTest\debug
+org.opencv.test.opencv-mergeDebugAndroidTestResources-1 E:\Android\250313\NexCut\opencv\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+org.opencv.test.opencv-mergeDebugAndroidTestResources-2 E:\Android\250313\NexCut\opencv\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+org.opencv.test.opencv-debugAndroidTest-3 E:\Android\250313\NexCut\opencv\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources
+org.opencv.test.opencv-debug-4 E:\Android\250313\NexCut\opencv\build\intermediates\packaged_res\debug\packageDebugResources
