@@ -117,6 +117,8 @@ public class MultiImageSelectorFragment extends Fragment {
     private int mRequestType;
     private boolean mIsFristLoad;
 
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -249,7 +251,10 @@ public class MultiImageSelectorFragment extends Fragment {
                         mFolderPopupWindow.dismiss();
 
                         if (index == getAllPicIndex()) {
-                            getActivity().getSupportLoaderManager().restartLoader(LOADER_ALL, null, mLoaderCallback);
+                            Bundle path = new Bundle();
+                            path.putString("path", "Screenshots"); // 设置路径参数
+
+                            getActivity().getSupportLoaderManager().restartLoader(LOADER_CATEGORY, path, mLoaderCallback);
                             mCategoryText.setText(R.string.folder_all);
                             if (showCamera()) {
                                 mImageAdapter.setShowCamera(true);
@@ -320,7 +325,12 @@ public class MultiImageSelectorFragment extends Fragment {
         // load image data
         getRequstType();
         mIsFristLoad = true;
-        getActivity().getSupportLoaderManager().initLoader(LOADER_ALL, null, mLoaderCallback);
+
+        Bundle path = new Bundle();
+        path.putString("path", "Screenshots"); // 设置路径参数
+
+        getActivity().getSupportLoaderManager().initLoader(LOADER_CATEGORY, path, mLoaderCallback);
+//        getActivity().getSupportLoaderManager().initLoader(LOADER_ALL, null, mLoaderCallback);
     }
 
     /**
@@ -620,7 +630,7 @@ public class MultiImageSelectorFragment extends Fragment {
                                 assestPath = "background";
                                 folderName = "背景素材";
                             }
-                            String[] files =getActivity().getAssets().list(assestPath);
+                            String[] files = getActivity().getAssets().list(assestPath);
                             List<Image> AssetImages = new ArrayList<>();
                             Folder folder = new Folder();
                             for (int i = 0; i < files.length; i++) {

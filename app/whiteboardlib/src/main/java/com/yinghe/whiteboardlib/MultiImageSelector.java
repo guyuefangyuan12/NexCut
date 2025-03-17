@@ -92,8 +92,13 @@ public class MultiImageSelector {
     private boolean hasPermission(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
             // Permission was added in API Level 16
-            return ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED;
+//            return ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE)
+//                    == PackageManager.PERMISSION_GRANTED;
+            if(ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED)
+                Toast.makeText(mContext, R.string.error_no_permission, Toast.LENGTH_SHORT).show();
+
+            return true;
         }
         return true;
     }
