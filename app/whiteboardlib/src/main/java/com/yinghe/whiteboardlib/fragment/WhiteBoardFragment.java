@@ -57,6 +57,8 @@ import static com.yinghe.whiteboardlib.bean.StrokeRecord.STROKE_TYPE_LINE;
 import static com.yinghe.whiteboardlib.bean.StrokeRecord.STROKE_TYPE_RECTANGLE;
 import static com.yinghe.whiteboardlib.bean.StrokeRecord.STROKE_TYPE_TEXT;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawChangedListener, View.OnClickListener {
@@ -78,8 +80,10 @@ public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawCha
     private static final float BTN_ALPHA = 0.4f;
 
     //文件保存目录
-    public static final String TEMP_FILE_PATH = Environment.getExternalStorageDirectory().toString() + "/YingHe/temp/";
-    public static final String FILE_PATH = Environment.getExternalStorageDirectory().toString() + "/YingHe/sketchPhoto/";
+//    public static final String TEMP_FILE_PATH = Environment.getExternalStorageDirectory().toString() + "/YingHe/temp/";
+//    public static final String FILE_PATH = Environment.getExternalStorageDirectory().toString() + "/YingHe/sketchPhoto/";
+    public static String TEMP_FILE_PATH;
+    public static String FILE_PATH;
     public static final String TEMP_FILE_NAME = "temp_";
 
     int keyboardHeight;
@@ -231,7 +235,10 @@ public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawCha
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         activity = getActivity();//初始化上下文
+        TEMP_FILE_PATH = activity.getExternalFilesDir(null).getPath() + "/WhiteBoard/temp/";
+        FILE_PATH = activity.getExternalFilesDir(null).getPath() + "/WhiteBoard/sketchPhoto/";
     }
 
     @Override
@@ -858,7 +865,7 @@ public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawCha
             if (compress >= 1 && compress <= 100)
                 newBM.compress(Bitmap.CompressFormat.PNG, compress, out);
             else {
-                newBM.compress(Bitmap.CompressFormat.PNG, 80, out);
+                newBM.compress(Bitmap.CompressFormat.PNG, 100, out);
             }
             Log.e(TAG, "saveInOI: " + System.currentTimeMillis());
 
@@ -915,6 +922,23 @@ public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawCha
             else
                 Toast.makeText(getActivity(), "保存失败！", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
+        }
+    }
+    public interface OnFragmentReadyListener {
+        void onFragmentReady();
+    }
+
+    private OnFragmentReadyListener listener;
+
+    public void setOnFragmentReadyListener(OnFragmentReadyListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (listener != null) {
+            listener.onFragmentReady();
         }
     }
 

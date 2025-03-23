@@ -35,24 +35,19 @@ public class ScreenUtils {
      * 获取状态栏高度
      */
     public static int getStatusBarHeight(Context context) {
-        Class<?> c = null;
-        Object obj = null;
-        Field field = null;
-        int x = 0, sbar = 0;
+        int statusBarHeight = 0;
         try {
-            c = Class.forName("com.android.internal.R$dimen");
-            obj = c.newInstance();
-            field = c.getField("status_bar_height");
-            x = Integer.parseInt(field.get(obj).toString());
-            sbar = context.getResources().getDimensionPixelSize(x);
-        } catch (Exception e1) {
-            Log.e("getStatusBarHight()", "get status bar height fail");
-            e1.printStackTrace();
+            int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = context.getResources().getDimensionPixelSize(resourceId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // 打印异常信息，避免程序崩溃
         }
-        int statusBarHeight = sbar;
-        Log.i("onPreDraw", "statusBarHeight: "+statusBarHeight);
+        Log.i("onPreDraw", "statusBarHeight: " + statusBarHeight);
         return statusBarHeight;
     }
+
 
     public static void hideInput(View v) {
         InputMethodManager inputManager = (InputMethodManager) v

@@ -53,6 +53,9 @@
             android:name=".device.device_Control"
             android:exported="false" />
         <activity
+            android:name=".device.device_Control"
+            android:exported="false" />
+        <activity
             android:name=".image.ImageEditActivity"
             android:exported="true"/>
         <activity
@@ -60,7 +63,9 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
