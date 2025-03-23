@@ -17,25 +17,20 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -43,6 +38,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.opencv.device.DeviceActivity;
 import com.example.opencv.device.DeviceInfoActivity;
+import com.example.opencv.device.InfoService;
 import com.example.opencv.device.device_Control;
 import com.example.opencv.image.GCodeRead;
 import com.example.opencv.image.ImageEditActivity;
@@ -53,8 +49,6 @@ import com.example.opencv.whiteboard.WhiteboardActivity;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -107,28 +101,34 @@ public class MainActivity extends AppCompatActivity {
         GCodeRead.copyNcFilesToStorage(this);
         InitialButtons();
         requestAppPermissions();
+        //开启读取信息服务
+        Intent startIntent = new Intent(MainActivity.this, InfoService.class);
+        MainActivity.this.startForegroundService(startIntent);
+/*
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mtcp.connect("10.84.164.63", 8888, 1, MainActivity.this);
+                } catch (ModbusTCPClient.ModbusException e) {
+                    Log.d("TCPtest", e.getMessage());
+                }
+            }
+        }).start();*/
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    try {
-                        if (mtcp.isConnected.get()) {
-                            List<Integer> deviceInfo = mtcp.ReadDeviceInfo();
-                            int deviceState = deviceInfo.get(8);
-                            SetDeviceButton(mtcp.ConnectDeviceId, deviceState);
-                            //Log.d("connectTest", "deviceState: " + deviceState);
-                        }
-                    } catch (ModbusTCPClient.ModbusException e) {
-                        //Log.d("connectTest", "连接失败 ");
+                    if (!mtcp.isConnected.get()) {
+                        SetDeviceButton(mtcp.ConnectDeviceId, 3);
+                    } else if (!mtcp.deviceInfo.isEmpty()) {
+                        int deviceState = mtcp.deviceInfo.get(8);
+                        SetDeviceButton(mtcp.ConnectDeviceId, deviceState);
                     }
                 }
             }
         }).start();
-//        findViewById(R.id.button1).setClickable(false);
-//        findViewById(R.id.button2).setClickable(false);
-//        findViewById(R.id.bottom_button2).setClickable(false);
-
     }
 
     public void onClickDevice(View view) {
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                mtcp.FileTransPort(1000, selectedFile, MainActivity.this);
+                                mtcp.FileTransport(1000, selectedFile, MainActivity.this);
                             } catch (ModbusTCPClient.ModbusException e) {
                                 handler.post(new Runnable() {
                                     @Override

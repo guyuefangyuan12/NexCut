@@ -68,7 +68,6 @@ public class ModBuscode {
         if (frame.length < MbapFrameLen) {
             throw new ModbusFrameException("Frame too short (" + frame.length + " bytes)");
         }
-
         ByteBuffer buffer = ByteBuffer.wrap(frame).order(ByteOrder.BIG_ENDIAN);
         List<Integer> mbapHeader = new ArrayList<>();
         mbapHeader.add(buffer.getShort() & 0xFFFF); // 事务ID
@@ -129,17 +128,16 @@ public class ModBuscode {
      * @throws ModbusFrameException 如果PDU为空或寄存器数量不匹配
      */
     public static List<Integer> decodeReadReg(byte[] pdu) throws ModbusFrameException {
-        if (pdu.length < 1) throw new ModbusFrameException("PDU为空");
+        if (pdu.length < 1) throw new ModbusFrameException("Empty PDU");
         // 检查Modbus返回值是否包含异常信息
         checkException(pdu[0]);
         if ((pdu[0] & 0xFF) != ReadFunCode) {
-            throw new ModbusFrameException("函数码不是读取寄存器");
+            throw new ModbusFrameException("Unexpected function code");
         }
         int byteCount = pdu[1] & 0xFF;
         if (pdu.length != FunCodeLen + ReadResponseCountLen + byteCount) {
             throw new ModbusFrameException("Byte count不匹配");
         }
-
         List<Integer> registers = new ArrayList<>();
         for (int i = 0; i < byteCount; i += RegDataLen) {
             int pos = FunCodeLen + ReadResponseCountLen + i;
@@ -172,7 +170,6 @@ public class ModBuscode {
         if (values.isEmpty() || values.size() > 1200) {
             throw new ModbusFrameException("Values count out of range (1-1200)");
         }
-
         // 分配PDU缓存
         ByteBuffer pdu = ByteBuffer.allocate(
                 FunCodeLen + RegAddrLen + RegCountLen + WriteRequestCountLen + values.size() * RegDataLen);
@@ -204,7 +201,6 @@ public class ModBuscode {
     public static List<Integer> decodeWriteReg(byte[] pdu) throws ModbusFrameException {
         if (pdu.length < 1) throw new ModbusFrameException("Empty PDU");
         checkException(pdu[0]);
-
         if ((pdu[0] & 0xFF) != WriteFunCode) {
             throw new ModbusFrameException("Unexpected function code");
         }
@@ -242,7 +238,7 @@ public class ModBuscode {
             byte[] fileData
     ) throws ModbusFrameException {
         if (fileData.length < 1 || fileData.length > 1400) {
-            throw new ModbusFrameException("  fileData  1-1400");
+            throw new ModbusFrameException("fileData  1-1400");
         }
         ByteBuffer pdu = ByteBuffer.allocate(FunCodeLen + FileAddrLen + FileDataCountLen + fileData.length * FileDataLen)
                 .order(ByteOrder.LITTLE_ENDIAN)

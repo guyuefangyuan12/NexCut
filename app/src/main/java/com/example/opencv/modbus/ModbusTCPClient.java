@@ -3,44 +3,44 @@ package com.example.opencv.modbus;
 import static org.apache.commons.codec.digest.DigestUtils.md5Hex;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.opencv.Constant;
-import com.example.opencv.MainActivity;
 import com.example.opencv.Utils.ProgressBarUtils;
+import com.example.opencv.device.InfoService;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 
 public class ModbusTCPClient {
     private static final ModbusTCPClient INSTANCE = new ModbusTCPClient();
     private static final String TAG = "ModbusTCPClient";
-    //private final ExecutorService executor = Executors.newSingleThreadExecutor();
     public final AtomicBoolean isConnected = new AtomicBoolean(false);
     private final AtomicInteger transactionId = new AtomicInteger(0);
-    private final Object lock = new Object();
+    private final Object requesrlock = new Object();
+    private final Object responserlock = new Object();
+    public List<Integer> deviceInfo = new CopyOnWriteArrayList<>();
     private int unitId = 0;
-
     public String ConnectDeviceId = "";
     private Socket socket;
     private BufferedInputStream inputStream;
     private BufferedOutputStream outputStream;
-    //private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     /**
      * 创建一个ModbusTCPClient实例
@@ -83,7 +83,7 @@ public class ModbusTCPClient {
      */
     public void connect(int timeout, String host, int port, int unitId, Context context) throws ModbusException {
         this.unitId = unitId;
-        synchronized (lock) {
+        synchronized (requesrlock) {
             try {
                 if (isConnected.get()) {
                     // 如果已经连接了，检查是否是同一个设备
@@ -97,6 +97,8 @@ public class ModbusTCPClient {
                 socket = new Socket(host, port);
                 socket.setSoTimeout(timeout);
                 socket.setSendBufferSize(1024 * 1024);
+                socket.setTcpNoDelay(true);
+                socket.setReuseAddress(true);
                 inputStream = new BufferedInputStream(socket.getInputStream());
                 outputStream = new BufferedOutputStream(socket.getOutputStream());
                 isConnected.set(true);
@@ -111,7 +113,7 @@ public class ModbusTCPClient {
      * 断开Modbus TCP连接
      */
     public void disconnect() {
-        synchronized (lock) {
+        synchronized (requesrlock) {
             try {
                 if (inputStream != null) inputStream.close();
                 if (outputStream != null) outputStream.close();
@@ -153,10 +155,9 @@ public class ModbusTCPClient {
             int remaining = expectedSize - totalRead; // 剩余需要读取的字节数
             // 从流中读取数据到数组的指定位置
             int bytesRead = in.read(data, totalRead, remaining);
-
             if (bytesRead == -1) {
                 // 流已结束，但未读取足够数据
-                throw new IOException("Unexpected end of stream. Expected " + expectedSize + " bytes, but got " + totalRead);
+                throw new IOException("Unexpected end of stream");
             }
             totalRead += bytesRead;
         }
@@ -171,27 +172,36 @@ public class ModbusTCPClient {
      * @throws IOException     读取时发生IO错误
      * @throws ModbusException 读取的响应格式错误
      */
-    private List<Integer> Response(int expectedFunction) throws IOException, ModbusException {
-        byte[] header = readBytes(inputStream, ModBuscode.MbapFrameLen);
-        List<Integer> data = new ArrayList<>();
-        try {
-            List<Integer> mbapHeader = ModBuscode.decodeMbapFrame(header);
-            byte[] pdu = readBytes(inputStream, mbapHeader.get(2) - ModBuscode.UnitIdLen);
-            switch (expectedFunction) {
-                case ModBuscode.ReadFunCode:
-                    data = ModBuscode.decodeReadReg(pdu);
-                    break;
-                case ModBuscode.WriteFunCode:
-                    data = ModBuscode.decodeWriteReg(pdu);
-                    break;
-                case ModBuscode.FileFunCode:
-                    data = ModBuscode.decodeFileTransport(pdu);
-                    break;
+    private List<Integer> Response(int expectedFunction) throws ModbusException {
+        synchronized (responserlock) {
+            try {
+                byte[] header = readBytes(inputStream, ModBuscode.MbapFrameLen);
+                List<Integer> data = new ArrayList<>();
+                try {
+                    List<Integer> mbapHeader = ModBuscode.decodeMbapFrame(header);
+                    byte[] pdu = readBytes(inputStream, mbapHeader.get(2) - ModBuscode.UnitIdLen);
+                    switch (expectedFunction) {
+                        case ModBuscode.ReadFunCode:
+                            data = ModBuscode.decodeReadReg(pdu);
+                            break;
+                        case ModBuscode.WriteFunCode:
+                            data = ModBuscode.decodeWriteReg(pdu);
+                            break;
+                        case ModBuscode.FileFunCode:
+                            data = ModBuscode.decodeFileTransport(pdu);
+                            break;
+                    }
+                } catch (ModBuscode.ModbusFrameException e) {
+                    throw new ModbusException(e.getMessage());
+                }
+                return data;
+            } catch (IOException e) {
+                if (e.getMessage().equals("Software caused connection abort")) {
+                    disconnect();
+                }
+                throw new ModbusException("Communication error: " + e.getMessage());
             }
-        } catch (ModBuscode.ModbusFrameException e) {
-            throw new ModbusException(e.getMessage());
         }
-        return data;
     }
 
     /**
@@ -211,12 +221,13 @@ public class ModbusTCPClient {
         } catch (ModBuscode.ModbusFrameException e) {
             throw new ModbusException(e.getMessage());
         }
-        synchronized (lock) {
+        synchronized (requesrlock) {
             try {
                 outputStream.write(request);
                 outputStream.flush();
                 return Response(ModBuscode.ReadFunCode);
             } catch (IOException e) {
+                disconnect();
                 throw new ModbusException("Communication error: " + e.getMessage());
             }
         }
@@ -252,19 +263,21 @@ public class ModbusTCPClient {
         } catch (ModBuscode.ModbusFrameException e) {
             throw new ModbusException(e.getMessage());
         }
-        synchronized (lock) {
+        synchronized (requesrlock) {
             try {
                 outputStream.write(request);
                 outputStream.flush();
                 List<Integer> response = Response(ModBuscode.WriteFunCode);
                 validateWriteResponse(response, startAddr, values.size());
             } catch (IOException e) {
+                disconnect();
                 throw new ModbusException("Communication error: " + e.getMessage());
             }
         }
     }
 
-    private void validateFileTransportResponse(List<Integer> data, int fileAddress, int quantity) throws ModbusException {
+    private void validateFileTransportResponse(List<Integer> data, int fileAddress,
+                                               int quantity) throws ModbusException {
         if (data.get(0) != fileAddress || data.get(1) != quantity) {
             throw new ModbusException("FileTransport validation failed");
         }
@@ -285,13 +298,16 @@ public class ModbusTCPClient {
         } catch (ModBuscode.ModbusFrameException e) {
             throw new ModbusException(e.getMessage());
         }
-        synchronized (lock) {
+        synchronized (requesrlock) {
             try {
                 outputStream.write(request);
                 outputStream.flush();
+                Log.d(TAG, "FileTransportstart");
                 List<Integer> response = Response(ModBuscode.FileFunCode);
                 validateFileTransportResponse(response, fileAddr, byteData.length);
+                Log.d(TAG, "FileTransportstop");
             } catch (IOException e) {
+                disconnect();
                 throw new ModbusException("Communication error: " + e.getMessage());
             }
         }
@@ -469,33 +485,40 @@ public class ModbusTCPClient {
         }
     }
 
-    public void FileTransPort(final int fileAddr, File file, Context context) throws ModbusException {
+    public void FileTransport(final int fileAddr, File file, Context context) throws
+            ModbusException {
         int bufferSize = 1024;
+        AtomicLong totalBytesSent = new AtomicLong(0);
         android.os.Handler handler = new Handler(Looper.getMainLooper());
         ProgressBarUtils progressHelper = new ProgressBarUtils();
         //File file = new File(context.getFilesDir(), "largefile.bin");
-        try (InputStream fis = new FileInputStream(file)) {
+        try (BufferedInputStream fis = new BufferedInputStream(new FileInputStream(file))) {
             String filename = file.getName();
             String md5String = md5Hex(fis);
             ControlFileStart(filename, md5String);
             byte[] buffer = new byte[bufferSize];
-            long totalBytesSent = 0;
             int bytesRead;
-            InputStream fis1 = new FileInputStream(file);
+            BufferedInputStream fis1 = new BufferedInputStream(new FileInputStream(file));
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     progressHelper.showProgressDialog(context); // 显示对话框
                 }
             });
+            Log.d("TCPtest", "文件传输开始");
             while ((bytesRead = fis1.read(buffer)) != -1) {
                 // 判断是否为最后一次读取（可能不足缓冲区大小）
                 byte[] aligendBytes = new byte[bytesRead];
                 System.arraycopy(buffer, 0, aligendBytes, 0, bytesRead);
-                FileTransportByte(fileAddr, aligendBytes);
-                totalBytesSent += bytesRead;
+                int finalBytesRead = bytesRead;
+                try {
+                    FileTransportByte(fileAddr, aligendBytes);
+                } catch (ModbusException e) {
+                    //throw new RuntimeException(e);
+                }
+                totalBytesSent.addAndGet(finalBytesRead);
                 // 计算进度
-                int progress = (int) ((totalBytesSent * 100) / file.length());
+                int progress = (int) ((totalBytesSent.get() * 100) / file.length());
                 // 更新对话框进度
                 handler.post(new Runnable() {
                     @Override
@@ -504,6 +527,7 @@ public class ModbusTCPClient {
                     }
                 });
             }
+            Log.d("TCPtest", "文件传输结束");
             ControlFileStop();
             handler.post(new Runnable() {
                 @Override

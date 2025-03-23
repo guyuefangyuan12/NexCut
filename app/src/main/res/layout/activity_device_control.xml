@@ -25,6 +25,7 @@
         android:orientation="vertical"
         android:weightSum="1"
         tools:context=".MainActivity">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -35,54 +36,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
                 <!-- 轴控制部分 -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="8dp"
-                    android:text="轴控制 (0-3)"
+                    android:text="方向控制"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
                     android:layout_marginBottom="16dp"
-                    android:orientation="horizontal">
+                    android:background="@drawable/circular_bg">
 
-                    <Spinner
-                        android:id="@+id/axisSpinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:entries="@array/axis_numbers" />
-
-                    <EditText
-                        android:id="@+id/speedEditText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="速度 (mm/s)"
-                        android:inputType="number"
-                        android:padding="8dp" />
-
-                    <EditText
-                        android:id="@+id/distanceEditText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="距离 (mm)"
-                        android:inputType="number|numberSigned"
-                        android:padding="8dp" />
-
+                    <!-- 中心确认按钮 -->
                     <Button
-                        android:id="@+id/moveButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="移动" />
+                        android:id="@+id/btn_center"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/orange_500" />
 
-                </LinearLayout>
+                    <!-- 上方向 -->
+                    <Button
+                        android:id="@+id/btn_up"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintCircle="@id/btn_center"
+                        app:layout_constraintCircleAngle="0"
+                        app:layout_constraintCircleRadius="100dp"
+                        app:tint="@color/gray_700" />
+
+                    <!-- 右方向 -->
+                    <Button
+                        android:id="@+id/btn_right"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintCircle="@id/btn_center"
+                        app:layout_constraintCircleAngle="270"
+                        app:layout_constraintCircleRadius="100dp"
+                        app:tint="@color/gray_700" />
+
+                    <!-- 下方向 -->
+                    <Button
+                        android:id="@+id/btn_down"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintCircle="@id/btn_center"
+                        app:layout_constraintCircleAngle="180"
+                        app:layout_constraintCircleRadius="100dp"
+                        app:tint="@color/gray_700" />
+
+                    <!-- 左方向 -->
+                    <Button
+                        android:id="@+id/btn_left"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:layout_constraintCircle="@id/btn_center"
+                        app:layout_constraintCircleAngle="90"
+                        app:layout_constraintCircleRadius="100dp"
+                        app:tint="@color/gray_700" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- DO控制部分 -->
                 <TextView
@@ -209,10 +231,10 @@
                 android:layout_marginVertical="10dp"
                 android:layout_weight="0.4"
                 android:adjustViewBounds="true"
-                android:src="@drawable/home_icon"
                 android:background="@null"
                 android:onClick="mainPage"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/home_icon" />
 
             <ImageButton
                 android:id="@+id/bottom_button2"
@@ -222,10 +244,10 @@
                 android:layout_marginVertical="0dp"
                 android:layout_weight="0.2"
                 android:adjustViewBounds="true"
-                android:src="@drawable/add_icon"
                 android:background="@null"
                 android:onClick="editImage"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/add_icon" />
 
             <ImageButton
                 android:id="@+id/bottom_button3"
@@ -235,10 +257,10 @@
                 android:layout_marginVertical="10dp"
                 android:layout_weight="0.4"
                 android:adjustViewBounds="true"
-                android:src="@drawable/setting_icon"
                 android:background="@null"
                 android:onClick="onClickDevice"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/setting_icon" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

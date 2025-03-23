@@ -17,7 +17,9 @@
     <color name="command_6">#3a4a59</color>
     <color name="DI_True">#00fe05</color>
     <color name="DI_False">#f2f2f2</color>
-
-
-
+    <color name="orange_500">#FF9800</color>
+    <color name="gray_700">#616161</color>
+    <color name="button_gray">#616161</color>
+    <color name="arrow_gray">#BDBDBD</color>
+    <color name="background_white">#FFFFFF</color>
 </resources>

@@ -36,12 +36,9 @@ public class UdpReceiver {
                     byte[] buffer = new byte[4096];
                     while (true) {
                         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                        //int port1 = socket.getLocalPort();
                         socket.receive(packet);
-
                         String data = new String(packet.getData(), 0, packet.getLength());
                         Log.d(TAG, "收到数据: " + data);
-
                         // 解析数据
                         String[] parts = data.split("&");
                         if (parts.length == 4) {

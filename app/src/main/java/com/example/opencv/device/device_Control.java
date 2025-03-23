@@ -1,5 +1,6 @@
 package com.example.opencv.device;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,15 +8,15 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -33,21 +34,26 @@ import com.example.opencv.R;
 import com.example.opencv.image.ImageEditActivity;
 import com.example.opencv.modbus.ModbusTCPClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class device_Control extends AppCompatActivity {
+
+    public static final int AXIS_Y = 0;
+    public static final int AXIS_X = 1;
+    public static final int DEFAULT_SPEED = 100;  // mm/s
+    public static final int DEFAULT_DISTANCE = 1; // mm
+    public static final int LONG_PRESS_DELAY = 500;  // 长按触发延迟(ms)
+    public static final int MOVE_INTERVAL = 100;  // 持续移动间隔(ms)
     ModbusTCPClient mtcp = ModbusTCPClient.getInstance();
     private static final String TAG = "devicecontrol";
-    private Spinner axisSpinner;
-    private EditText speedEditText;
-    private EditText distanceEditText;
-    private Button moveButton;
+    private Button button_up;
+    private Button button_down;
+    private Button button_left;
+    private Button button_right;
     private NumberPicker da1Picker;
     private NumberPicker da2Picker;
 
     private static Toolbar toolbar;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,25 +70,14 @@ public class device_Control extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // 初始化轴控制
-        axisSpinner = findViewById(R.id.axisSpinner);
-        speedEditText = findViewById(R.id.speedEditText);
-        distanceEditText = findViewById(R.id.distanceEditText);
-        moveButton = findViewById(R.id.moveButton);
-
-        moveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    int axis = axisSpinner.getSelectedItemPosition();
-                    int speed = Integer.parseInt(speedEditText.getText().toString());
-                    int distance = Integer.parseInt(distanceEditText.getText().toString());
-                    moveAxis(axis, speed, distance);
-                } catch (NumberFormatException e) {
-                    speedEditText.setError("请输入整数速度");
-                    distanceEditText.setError("请输入整数距离");
-                }
-            }
-        });
+        button_up = findViewById(R.id.btn_up);
+        button_down = findViewById(R.id.btn_down);
+        button_left = findViewById(R.id.btn_left);
+        button_right = findViewById(R.id.btn_right);
+        btnMoveControl(button_up, AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
+        btnMoveControl(button_down, AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
+        btnMoveControl(button_left, AXIS_X, DEFAULT_SPEED, DEFAULT_DISTANCE);
+        btnMoveControl(button_right, AXIS_X, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
 
         // 初始化DO控制
         GridLayout doGrid = findViewById(R.id.doGrid);
@@ -133,6 +128,40 @@ public class device_Control extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 setDA(daNumber, newVal);
+            }
+        });
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void btnMoveControl(Button button, int axis, int speed, int distance) {
+        button.setOnTouchListener(new View.OnTouchListener() {
+            private Handler handler = new Handler();
+            private long downTime;
+            private Runnable longPressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    moveAxis(AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
+                    handler.postDelayed(this, LONG_PRESS_DELAY);
+                }
+            };
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        downTime = System.currentTimeMillis();
+                        handler.postDelayed(longPressRunnable, LONG_PRESS_DELAY);
+                        return true;
+                    case MotionEvent.ACTION_UP:
+                        long upTime = System.currentTimeMillis();
+                        if (upTime - downTime < LONG_PRESS_DELAY) {
+                            // 单击事件
+                            moveAxis(AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
+                        }
+                        handler.removeCallbacks(longPressRunnable);
+                        return true;
+                }
+                return false;
             }
         });
     }

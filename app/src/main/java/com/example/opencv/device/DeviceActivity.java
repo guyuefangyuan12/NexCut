@@ -51,7 +51,7 @@ public class DeviceActivity extends AppCompatActivity implements UdpReceiver.OnD
     private ExecutorService executorService;
     private Handler expirationHandler = new Handler(Looper.getMainLooper());
     public static ImageView noDeviceImage;
-    //public static ScrollView deviceList;
+
     public static Toolbar toolbar;
 
 
@@ -73,7 +73,6 @@ public class DeviceActivity extends AppCompatActivity implements UdpReceiver.OnD
         decorView.setSystemUiVisibility(uiOptions);
 
         noDeviceImage = findViewById(R.id.nodeviceimage);
-        //deviceList = findViewById(R.id.devicelist);
 
         deviceSet = new CopyOnWriteArraySet<>();
 
@@ -122,7 +121,7 @@ public class DeviceActivity extends AppCompatActivity implements UdpReceiver.OnD
 
         udpReceiver = new UdpReceiver(4001, new Handler(Looper.getMainLooper()), this);
         udpReceiver.startReceiving();
-
+        startExpirationCheck();
         //updateDeviceListVisibility();
     }
 
@@ -151,7 +150,6 @@ public class DeviceActivity extends AppCompatActivity implements UdpReceiver.OnD
             // 如果已存在，更新时间戳
             device.updateTimestamp();
         }
-        //runOnUiThread(this::updateDeviceListVisibility);
     }
 
     @Override
@@ -181,12 +179,13 @@ public class DeviceActivity extends AppCompatActivity implements UdpReceiver.OnD
             while (iterator.hasNext()) {
                 Device device = iterator.next();
                 if (currentTime - device.getLastUpdated() > DEVICE_EXPIRATION_MS) {
-                    iterator.remove();
-                    deviceTableAdapter.removeDevice(device);
+                    runOnUiThread(() -> {
+                        //iterator.remove();
+                        deviceTableAdapter.removeDevice(device);
+                    });
                 }
             }
         }).start();
-        //runOnUiThread(this::updateDeviceListVisibility);
     }
 
     private void updateDeviceListVisibility() {

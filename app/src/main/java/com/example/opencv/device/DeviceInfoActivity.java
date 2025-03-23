@@ -104,9 +104,9 @@ public class DeviceInfoActivity extends AppCompatActivity {
                 while (isRunning) {
                     try {
                         // 获取设备信息
-                        List<Integer> deviceInfo = mtcp.ReadDeviceInfo();
+                        //List<Integer> deviceInfo = mtcp.ReadDeviceInfo();
 
-                        final List<DeviceDataItem> deviceData = praseDeviceData(deviceInfo);
+                        final List<DeviceDataItem> deviceData = praseDeviceData(mtcp.deviceInfo);
 
                         // 在主线程更新UI
                         handler.post(new Runnable() {
@@ -119,18 +119,10 @@ public class DeviceInfoActivity extends AppCompatActivity {
                                 adapter.notifyDataSetChanged();
                             }
                         });
-                        // Thread.sleep(500);
-                        //} catch (InterruptedException e) {
-                        // Thread.currentThread().interrupt();
-                        // break;
-                    } catch (ModbusTCPClient.ModbusException e) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mtcp.onReadFailed(DeviceInfoActivity.this);
-                            }
-                        });
-                        Log.d("info", e.getMessage());
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
                     }
                 }
             }
