@@ -57,6 +57,8 @@ import static com.yinghe.whiteboardlib.bean.StrokeRecord.STROKE_TYPE_LINE;
 import static com.yinghe.whiteboardlib.bean.StrokeRecord.STROKE_TYPE_RECTANGLE;
 import static com.yinghe.whiteboardlib.bean.StrokeRecord.STROKE_TYPE_TEXT;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawChangedListener, View.OnClickListener {
@@ -920,6 +922,23 @@ public class WhiteBoardFragment extends Fragment implements SketchView.OnDrawCha
             else
                 Toast.makeText(getActivity(), "保存失败！", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
+        }
+    }
+    public interface OnFragmentReadyListener {
+        void onFragmentReady();
+    }
+
+    private OnFragmentReadyListener listener;
+
+    public void setOnFragmentReadyListener(OnFragmentReadyListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (listener != null) {
+            listener.onFragmentReady();
         }
     }
 

@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 
@@ -17,6 +18,8 @@ import org.opencv.android.OpenCVLoader;
 
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,10 +37,12 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.opencv.MainActivity;
 import com.example.opencv.R;
 import com.example.opencv.modbus.ModbusTCPClient;
+import com.example.opencv.whiteboard.WhiteboardActivity;
 
 import org.opencv.core.Rect;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -81,7 +86,8 @@ public class ImageEditActivity extends AppCompatActivity {
         Button btnCrop = findViewById(R.id.btnCrop);
         Button GCodeGen = findViewById(R.id.GCodeGen);
         Button GCodeRead = findViewById(R.id.readGCode);
-
+        Button Graffiti = findViewById(R.id.graffiti);
+;
         InitialImage();
 
         //OpenCV初始化
@@ -106,6 +112,7 @@ public class ImageEditActivity extends AppCompatActivity {
         btnCrop.setOnClickListener(v -> applyCrop());
         GCodeGen.setOnClickListener(v -> generateCode());
         GCodeRead.setOnClickListener(v -> readGCode());
+        Graffiti.setOnClickListener(v -> graffiti());
         requestAppPermissions();
 
         //toolbar = findViewById(R.id.toolbar);
@@ -300,6 +307,44 @@ public class ImageEditActivity extends AppCompatActivity {
             selectedBitmap = HalftoneDithering.applyJJNDithering(selectedBitmap);
             imageView.setImageBitmap(selectedBitmap);
         }
+    }
+
+    // 创建临时图片文件
+    private File createImageFile() throws IOException {
+        String imageFileName = "PNG_" + System.currentTimeMillis() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        /* 前缀 */
+        /* 后缀 */
+        /* 目录 */
+        return File.createTempFile(
+                imageFileName,  /* 前缀 */
+                ".png",         /* 后缀 */
+                storageDir      /* 目录 */
+        );
+    }
+
+    public void graffiti() {
+
+        try {
+            File tempFile = createImageFile(); // 创建临时文件
+            FileOutputStream out = new FileOutputStream(tempFile);
+            selectedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+            imageUri = Uri.fromFile(tempFile);
+
+            // 传递 URI 给下一个 Activity
+            Intent intent = new Intent(ImageEditActivity.this, WhiteboardActivity.class);
+            intent.putExtra("imageUri", imageUri.toString());
+            startActivity(intent);
+
+            //imageView.setImageBitmap(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 
