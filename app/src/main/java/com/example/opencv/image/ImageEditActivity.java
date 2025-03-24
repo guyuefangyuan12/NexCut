@@ -87,7 +87,7 @@ public class ImageEditActivity extends AppCompatActivity {
         Button GCodeGen = findViewById(R.id.GCodeGen);
         Button GCodeRead = findViewById(R.id.readGCode);
         Button Graffiti = findViewById(R.id.graffiti);
-;
+        ;
         InitialImage();
 
         //OpenCV初始化
@@ -277,8 +277,7 @@ public class ImageEditActivity extends AppCompatActivity {
                         public void run() {
                             try {
                                 // Looper.prepare();
-                                mtcp.FileTransPort(1000, selectedFile, ImageEditActivity.this);
-
+                                mtcp.FileTransport(1000, selectedFile, ImageEditActivity.this);
                             } catch (ModbusTCPClient.ModbusException e) {
                                 //mtcp.onFileFailed(ImageEditActivity.this);
                                 //Looper.loop();

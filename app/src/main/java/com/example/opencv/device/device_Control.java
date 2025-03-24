@@ -2,6 +2,8 @@ package com.example.opencv.device;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -34,23 +38,27 @@ import com.example.opencv.R;
 import com.example.opencv.image.ImageEditActivity;
 import com.example.opencv.modbus.ModbusTCPClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class device_Control extends AppCompatActivity {
 
     public static final int AXIS_Y = 0;
     public static final int AXIS_X = 1;
-    public static final int DEFAULT_SPEED = 100;  // mm/s
-    public static final int DEFAULT_DISTANCE = 1; // mm
-    public static final int LONG_PRESS_DELAY = 500;  // 长按触发延迟(ms)
-    public static final int MOVE_INTERVAL = 100;  // 持续移动间隔(ms)
+    public static final int AXIS_Z = 3;
+    public static final int DEFAULT_SPEED = 50;  //mm/s
+    public static final int DEFAULT_DISTANCE = 1000; // mm
+    public static final int LONG_PRESS_DELAY = 10;  // 长按触发延迟(ms)
     ModbusTCPClient mtcp = ModbusTCPClient.getInstance();
     private static final String TAG = "devicecontrol";
     private Button button_up;
     private Button button_down;
     private Button button_left;
     private Button button_right;
-    private NumberPicker da1Picker;
-    private NumberPicker da2Picker;
-
+    private Button button_stop;
+    private List<ImageView> DIImageViews;
+    private Button button_Zup;
+    private Button button_Zdown;
     private static Toolbar toolbar;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,7 +66,7 @@ public class device_Control extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_device_control);
+        setContentView(R.layout.activity_device_control_new);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -74,11 +82,15 @@ public class device_Control extends AppCompatActivity {
         button_down = findViewById(R.id.btn_down);
         button_left = findViewById(R.id.btn_left);
         button_right = findViewById(R.id.btn_right);
-        btnMoveControl(button_up, AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
-        btnMoveControl(button_down, AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
-        btnMoveControl(button_left, AXIS_X, DEFAULT_SPEED, DEFAULT_DISTANCE);
-        btnMoveControl(button_right, AXIS_X, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
-
+        button_Zup = findViewById(R.id.btn_z_plus);
+        button_Zdown = findViewById(R.id.btn_z_minus);
+        btnMoveControl(button_up, AXIS_X, DEFAULT_SPEED, DEFAULT_DISTANCE);
+        btnMoveControl(button_down, AXIS_X, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
+        btnMoveControl(button_left, AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
+        btnMoveControl(button_right, AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
+        btnMoveControl(button_Zup, AXIS_Z, DEFAULT_SPEED, DEFAULT_DISTANCE);
+        btnMoveControl(button_Zdown, AXIS_Z, DEFAULT_SPEED, DEFAULT_DISTANCE * (-1));
+        button_stop = findViewById(R.id.command_2);
         // 初始化DO控制
         GridLayout doGrid = findViewById(R.id.doGrid);
         for (int i = 1; i <= 8; i++) {
@@ -94,12 +106,51 @@ public class device_Control extends AppCompatActivity {
             doGrid.addView(doSwitch);
         }
 
-        // 初始化DA控制
-        da1Picker = findViewById(R.id.da1Picker);
-        da2Picker = findViewById(R.id.da2Picker);
+        // 初始化DI显示
+        GridLayout diStateGrid = findViewById(R.id.DI_State);
+        DIImageViews = new ArrayList<>();
+        for (int i = 0; i < diStateGrid.getChildCount(); i++) {
+            View child = diStateGrid.getChildAt(i);
+            // 确保子元素是 LinearLayout
+            if (child instanceof LinearLayout) {
+                LinearLayout linearLayout = (LinearLayout) child;
+                // 获取 LinearLayout 中的第二个子元素（ImageView）
+                View imageView = linearLayout.getChildAt(1);
+                if (imageView instanceof ImageView) {
+                    DIImageViews.add((ImageView) imageView);
+                }
+            }
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(100);
+                        updateDIState();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
 
-        configureNumberPicker(da1Picker, 1);
-        configureNumberPicker(da2Picker, 2);
+    }
+
+    private void updateDIState() {
+        int distate = mtcp.deviceInfo.get(4);
+        for (int i = 0; i < DIImageViews.size(); i++) {
+            ImageView imageView = DIImageViews.get(i);
+            if (((distate >> i) & 1) == 1) {
+                runOnUiThread(() -> {
+                    imageView.setBackgroundTintList(getColorStateList(R.color.DI_True));
+                });
+            } else {
+                runOnUiThread(() -> {
+                    imageView.setBackgroundTintList(getColorStateList(R.color.DI_False));
+                });
+            }
+        }
     }
 
     // 加载 Toolbar 菜单
@@ -137,28 +188,24 @@ public class device_Control extends AppCompatActivity {
     private void btnMoveControl(Button button, int axis, int speed, int distance) {
         button.setOnTouchListener(new View.OnTouchListener() {
             private Handler handler = new Handler();
-            private long downTime;
             private Runnable longPressRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    moveAxis(AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
-                    handler.postDelayed(this, LONG_PRESS_DELAY);
+                    moveAxis(axis, speed, distance);
                 }
             };
 
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        downTime = System.currentTimeMillis();
-                        handler.postDelayed(longPressRunnable, LONG_PRESS_DELAY);
+                        handler.post(longPressRunnable);
                         return true;
                     case MotionEvent.ACTION_UP:
-                        long upTime = System.currentTimeMillis();
-                        if (upTime - downTime < LONG_PRESS_DELAY) {
-                            // 单击事件
-                            moveAxis(AXIS_Y, DEFAULT_SPEED, DEFAULT_DISTANCE);
-                        }
-                        handler.removeCallbacks(longPressRunnable);
+                        button_stop.performClick();
+                        /*handler.post(() -> {
+                            Stop(v);
+
+                        });*/
                         return true;
                 }
                 return false;

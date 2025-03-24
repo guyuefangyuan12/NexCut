@@ -133,66 +133,74 @@
                         android:text="加 工"
                         android:layout_marginEnd="10dp"
                         android:textColor="@color/white"/>
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/command_2"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/command_button_height"
                         android:layout_columnWeight="1"
                         android:layout_margin="@dimen/command_button_margin"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/command_button"
                         android:backgroundTint="@color/command_1"
                         android:drawableLeft="@drawable/play_48dp"
-                        android:text="加 工"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/white"/>
+                        android:text="暂停"
+                        android:textColor="@color/white" />
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/command_3"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/command_button_height"
                         android:layout_columnWeight="1"
                         android:layout_margin="@dimen/command_button_margin"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/command_button"
                         android:backgroundTint="@color/command_1"
                         android:drawableLeft="@drawable/play_48dp"
-                        android:text="加 工"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/white"/>
+                        android:onClick="Stop"
+                        android:text="停止"
+                        android:textColor="@color/white" />
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/command_4"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/command_button_height"
                         android:layout_columnWeight="1"
                         android:layout_margin="@dimen/command_button_margin"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/command_button"
                         android:backgroundTint="@color/command_1"
                         android:drawableLeft="@drawable/play_48dp"
-                        android:text="加 工"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/white"/>
+                        android:onClick="FTC"
+                        android:text="跟随"
+                        android:textColor="@color/white" />
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/command_5"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/command_button_height"
                         android:layout_columnWeight="1"
                         android:layout_margin="@dimen/command_button_margin"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/command_button"
                         android:backgroundTint="@color/command_1"
                         android:drawableLeft="@drawable/play_48dp"
-                        android:text="加 工"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/white"/>
+                        android:text="走边框"
+                        android:textColor="@color/white" />
+
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/command_6"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/command_button_height"
                         android:layout_columnWeight="1"
                         android:layout_margin="@dimen/command_button_margin"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/command_button"
                         android:backgroundTint="@color/command_1"
                         android:drawableLeft="@drawable/play_48dp"
-                        android:text="加 工"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/white"/>
+                        android:onClick="Back"
+                        android:text="回原"
+                        android:textColor="@color/white" />
 
 
 

@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
         //开启读取信息服务
         Intent startIntent = new Intent(MainActivity.this, InfoService.class);
         MainActivity.this.startForegroundService(startIntent);
-/*
-        new Thread(new Runnable() {
+
+       /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    mtcp.connect("10.84.164.63", 8888, 1, MainActivity.this);
+                    mtcp.connect("192.168.0.38", 4002, 1, MainActivity.this);
                 } catch (ModbusTCPClient.ModbusException e) {
                     Log.d("TCPtest", e.getMessage());
                 }
